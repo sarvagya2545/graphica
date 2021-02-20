@@ -1,0 +1,19 @@
+{
+  "name": "graphica",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sarvagya2545/graphica.git"
+  },
+  "author": "Sarvagya Sharma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sarvagya2545/graphica/issues"
+  },
+  "homepage": "https://github.com/sarvagya2545/graphica#readme"
+}
