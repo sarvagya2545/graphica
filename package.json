@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/sarvagya2545/graphica/issues"
   },
-  "homepage": "https://github.com/sarvagya2545/graphica#readme"
+  "homepage": "https://github.com/sarvagya2545/graphica#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "express": "^4.17.1",
+    "passport": "^0.4.1"
+  }
 }
