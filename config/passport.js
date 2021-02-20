@@ -15,11 +15,14 @@ passport.use(
         async (payload, done) => {
             try {
                 console.log(payload);
+                console.log('HERE');
 
                 // Find the user specified in token
                 const user = await User.findById(payload.sub).select(
                     "-auth.local.password"
                 );
+
+                console.log(user);
 
                 // If user doesn't exists, handle it
                 if (!user) {

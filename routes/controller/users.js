@@ -3,9 +3,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { jwtSecret } = require('../../config/keys');
 
-const signToken = ({ id }) => {
+const signToken = (user) => {
   return jwt.sign({
-    sub: id,
+    sub: user._id,
     iss: 'Graphica',
     iat: new Date().getTime()
   }, jwtSecret, {
@@ -70,9 +70,20 @@ module.exports = {
       }
 
       res.status(200).json(payload);
-      
+
     } catch (err) {
       console.log(err);
+      res.status(500).json({ err: "Server error" });
+    }
+  },
+  getUser: async (req,res) => {
+    try {
+      const user = req.user;
+      const token = signToken(user);
+
+      res.json({ token, user });
+    } catch (error) {
+      console.log(error);
       res.status(500).json({ err: "Server error" });
     }
   }
