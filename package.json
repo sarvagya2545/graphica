@@ -18,7 +18,14 @@
   "homepage": "https://github.com/sarvagya2545/graphica#readme",
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "passport": "^0.4.1"
+    "mongoose": "^5.11.17",
+    "passport": "^0.4.1",
+    "passport-google-token": "^0.1.2",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0"
   }
 }
