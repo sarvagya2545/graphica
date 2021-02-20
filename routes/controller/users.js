@@ -61,6 +61,15 @@ module.exports = {
   },
   login: async (req,res) => {
     try {
+      const user = req.user._doc;
+      const token = signToken(user);
+      
+      const payload = {
+        token,
+        user
+      }
+
+      res.status(200).json(payload);
       
     } catch (err) {
       console.log(err);

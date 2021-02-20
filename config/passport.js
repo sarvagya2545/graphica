@@ -60,9 +60,7 @@ passport.use(
                 }
 
                 // Check if the password is correct
-                const isMatch = await user.isValidPassword(password);
-
-                console.log(isMatch);
+                const isMatch = await foundUser.isValidPassword(password);
 
                 // If not, handle it
                 if (!isMatch) {
@@ -70,7 +68,7 @@ passport.use(
                 }
 
                 // Otherwise, return the user
-                done(null, user);
+                done(null, foundUser);
             } catch (error) {
                 done(error, false);
             }

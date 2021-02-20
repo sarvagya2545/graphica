@@ -13,6 +13,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors())
 
+require('./config/passport');
+
 // mongoose connection
 mongoose
   .connect(mongoDBURL, {
