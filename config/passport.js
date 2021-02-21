@@ -5,11 +5,19 @@ const { Strategy: GoogleTokenStrategy } = require("passport-google-token");
 const User = require("../models/User");
 const { jwtSecret } = require("./keys");
 
+const cookieExtractor = (req) => {
+    var token = null;
+    if (req && req.cookies) token = req.cookies['Auth'];
+
+    console.log(req.cookies);
+    return token;
+}
+
 // jwt strategy, used to get the user from jwt
 passport.use(
     new JwtStrategy(
         {
-            jwtFromRequest: ExtractJwt.fromHeader("authorization"),
+            jwtFromRequest: cookieExtractor,
             secretOrKey: jwtSecret,
         },
         async (payload, done) => {

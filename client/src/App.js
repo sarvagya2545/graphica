@@ -8,7 +8,7 @@ const App = () => {
     try {
       //  { email: 'sarvagya@newtesting4.com', password: '12345678' },
 
-      const res = await axios.post(`/users/login`,  { email: 'sarvagya@newtesting4.com', password: '12345678' }, {
+      const res = await axios.post(`/users/login`,  { email: `sarvagya@newtesting4.com`, password: '12345678' }, {
         withCredentials: true
       })
 
@@ -16,12 +16,17 @@ const App = () => {
     } catch (error) {
       console.log(error?.response);
     }
+  }
 
-
+  const getData = () => {
+    axios.get('/users/secret', { withCredentials: true })
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
   }
 
   return (<>
     <button onClick={getCookies}>GET COOKIES</button>
+    <button onClick={getData}>GET USER DATA THROUGH COOKIES</button>
   </>)
 }
 

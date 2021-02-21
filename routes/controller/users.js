@@ -54,7 +54,7 @@ module.exports = {
 
       res.status(201).cookie('Auth', token, {
         sameSite: 'strict',
-        expires: new Date(new Date().getDate() + 1),
+        maxAge: 24 * 60 * 60,
         httpOnly: true
       }).json({ token, user: userDetails });
 
@@ -106,5 +106,8 @@ module.exports = {
       maxAge: 24 * 60 * 60,
       httpOnly: true
     }).json({ payload: 'Set cookie' })
+  },
+  secret: async(req,res) => {
+    res.send('SECRET');
   }
 }
