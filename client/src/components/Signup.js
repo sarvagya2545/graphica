@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { register } from '../redux/actions/authActions';
 
 const Signup = ({ register }) => {
@@ -23,15 +24,25 @@ const Signup = ({ register }) => {
   }
 
   return (
-    <form className="form" onSubmit={submitHandler}>
-      <label htmlFor="email">Email</label>
-      <input type="email" name="email" value={formData.email} onChange={onChangeHandler}/>
-      <label htmlFor="password">Password</label>
-      <input type="password" name="password" value={formData.password} onChange={onChangeHandler}/>
-      <label htmlFor="confirmPassword">Confirm Password</label>
-      <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={onChangeHandler}/>
-      <button type="submit">Signup</button>
-    </form>
+    <div className="container container-form">
+      <h1>SIGNUP</h1>
+      <form className="form" onSubmit={submitHandler}>
+        <div className="form-group">
+          <input type="email" name="email" className="input" value={formData.email} onChange={onChangeHandler} placeholder="..."/>
+          <label htmlFor="email">Email</label>
+        </div>
+        <div className="form-group">
+          <input type="password" name="password" className="input" value={formData.password} onChange={onChangeHandler} placeholder="..."/>
+          <label htmlFor="password">Password</label>
+        </div>
+        <div className="form-group">
+          <input type="password" name="confirmPassword" className="input" value={formData.confirmPassword} onChange={onChangeHandler} placeholder="..."/>
+          <label htmlFor="confirmPassword">Confirm Password</label>
+        </div>
+        <button type="submit" className="btn btn-submit">Signup</button>
+      </form>
+      <Link to="/login">Already having an account? Log in!</Link>
+    </div>
   );
 }
  

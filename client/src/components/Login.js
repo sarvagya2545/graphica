@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { login } from '../redux/actions/authActions';
 
 const Login = ({ login }) => {
@@ -22,13 +23,21 @@ const Login = ({ login }) => {
   }
 
   return (
-    <form className="form" onSubmit={submitHandler}>
-      <label htmlFor="email">Email</label>
-      <input type="email" name="email" value={formData.email} onChange={onChangeHandler}/>
-      <label htmlFor="password">Password</label>
-      <input type="password" name="password" value={formData.password} onChange={onChangeHandler}/>
-      <button type="submit">Login</button>
-    </form>
+    <div className="container container-form">
+      <h1>LOGIN</h1>
+      <form className="form" onSubmit={submitHandler}>
+        <div className="form-group">
+          <input type="email" name="email" className="input" value={formData.email} onChange={onChangeHandler} placeholder="..."/>
+          <label htmlFor="email">Email</label>
+        </div>
+        <div className="form-group">
+          <input type="password" name="password" className="input" value={formData.password} onChange={onChangeHandler} placeholder="..."/>
+          <label htmlFor="password">Password</label>
+        </div>
+        <button type="submit" className="btn btn-submit">Login</button>
+      </form>
+      <Link to="/signup">Don't have an account? Sign Up!</Link>
+    </div>
   );
 }
  
