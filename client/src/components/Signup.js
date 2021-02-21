@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { register } from '../redux/actions/authActions';
 
-const Signup = () => {
+const Signup = ({ register }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -18,9 +19,7 @@ const Signup = () => {
   const submitHandler = e => {
     e.preventDefault();
 
-    axios.post(`/users/signup`, formData, { withCredentials: true })
-      .then(res => console.log(res))
-      .catch(err => console.log(err?.response));
+    register(formData);
   }
 
   return (
@@ -36,4 +35,4 @@ const Signup = () => {
   );
 }
  
-export default Signup;
+export default connect(null, { register })(Signup);
