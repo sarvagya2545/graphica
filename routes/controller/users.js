@@ -94,7 +94,8 @@ module.exports = {
 
       res.cookie('Auth', token, {
         maxAge: 24 * 60 * 60,
-        httpOnly: true
+        httpOnly: true,
+        sameSite: 'strict'
       }).json({ token, user });
     } catch (error) {
       console.log(error);

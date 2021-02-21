@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { register } from '../redux/actions/authActions';
 
-const Signup = ({ register }) => {
+const Signup = ({ register, isAuthenticated }) => {
+  let history = useHistory();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -22,6 +23,12 @@ const Signup = ({ register }) => {
 
     register(formData);
   }
+
+  useEffect(() => {
+    if(isAuthenticated) {
+      history.push('/dashboard');
+    }
+  }, []);
 
   return (
     <div className="container container-form">
@@ -46,4 +53,10 @@ const Signup = ({ register }) => {
   );
 }
  
-export default connect(null, { register })(Signup);
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.auth.isAuthenticated
+  }
+}
+
+export default connect(mapStateToProps, { register })(Signup);

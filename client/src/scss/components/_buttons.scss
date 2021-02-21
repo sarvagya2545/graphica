@@ -9,9 +9,10 @@
     background-color: $color-primary;
     color: #fff;
     padding: 1.4rem 1.5rem;
+    transition: all .2s ease;
 
     &:hover {
-      box-shadow: 0 10px 10px rgba(#000, 0.3);
+      box-shadow: 0 5px 10px rgba(#000, 0.3);
     }
   }
 }

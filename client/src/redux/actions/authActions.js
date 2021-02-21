@@ -4,9 +4,23 @@ import {
   LOGIN_FAIL,
   LOGIN_SUCCESS,
   NO_ERRORS,
+  NO_USER_LOADED,
   REGISTER_FAIL,
   REGISTER_SUCCESS,
+  USER_LOADED,
 } from "./types";
+
+export const loadUser = () => dispatch => {
+  axios.get('/users/current', { withCredentials: true })
+    .then(res => {
+      console.log(res);
+      dispatch({ type: USER_LOADED, payload: res.data })
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({ type: NO_USER_LOADED })
+    })
+}
 
 export const register = (formData) => (dispatch) => {
   axios
