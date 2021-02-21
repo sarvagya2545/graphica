@@ -22,4 +22,7 @@ router.route('/current')
   .get(passportJWT, UserController.getUser)
 ;
 
+router.route('/cookie')
+  .get(UserController.sendCookie);
+
 module.exports = router;

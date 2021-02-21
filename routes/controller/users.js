@@ -52,7 +52,13 @@ module.exports = {
         id: user._id
       }
 
-      res.status(201).json({ token, user: userDetails });
+      res.status(201).cookie('Auth', token, {
+        sameSite: 'strict',
+        expires: new Date(new Date().getDate() + 1),
+        httpOnly: true
+      }).json({ token, user: userDetails });
+
+      // .json({ token, user: userDetails })
 
     } catch (err) {
       console.log(err);
@@ -69,7 +75,12 @@ module.exports = {
         user
       }
 
-      res.status(200).json(payload);
+      res.cookie('Auth', token, {
+        maxAge: 24 * 60 * 60,
+        httpOnly: true,
+        sameSite: 'strict'
+        // secure: true
+      }).json(payload);
 
     } catch (err) {
       console.log(err);
@@ -81,10 +92,19 @@ module.exports = {
       const user = req.user;
       const token = signToken(user);
 
-      res.json({ token, user });
+      res.cookie('Auth', token, {
+        maxAge: 24 * 60 * 60,
+        httpOnly: true
+      }).json({ token, user });
     } catch (error) {
       console.log(error);
       res.status(500).json({ err: "Server error" });
     }
+  },
+  sendCookie: async (req,res) => {
+    res.cookie('Name', 'Sarvagya Sharma', {
+      maxAge: 24 * 60 * 60,
+      httpOnly: true
+    }).json({ payload: 'Set cookie' })
   }
 }
