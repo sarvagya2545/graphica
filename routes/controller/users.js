@@ -21,7 +21,7 @@ module.exports = {
       const findUser = await User.findOne({ "auth.email": email });
 
       if(findUser) {
-        return res.status(400).json({ err: 'Email is already in use' });
+        return res.status(400).json({errors: { email: 'Email is already in use' }});
       }
 
       const salt = await bcrypt.genSalt(10);
@@ -62,7 +62,7 @@ module.exports = {
 
     } catch (err) {
       console.log(err);
-      res.status(500).json({ err: "Server error" });
+      res.status(500).json({errors: { err: "Server error" }});
     }
   },
   login: async (req,res) => {
@@ -84,7 +84,7 @@ module.exports = {
 
     } catch (err) {
       console.log(err);
-      res.status(500).json({ err: "Server error" });
+      res.status(500).json({errors: { err: "Server error" }});
     }
   },
   getUser: async (req,res) => {
@@ -98,7 +98,7 @@ module.exports = {
       }).json({ token, user });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ err: "Server error" });
+      res.status(500).json({errors: { err: "Server error" }}); 
     }
   },
   sendCookie: async (req,res) => {

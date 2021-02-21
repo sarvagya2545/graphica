@@ -8,3 +8,9 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAIL = 'REGISTER_FAIL';
+
+// ERROR REDUCER ACTIONS
+export const NO_ERRORS = "NO_ERRORS";
+export const AUTH_ERROR = 'AUTH_ERROR';
+export const SERVER_ERROR = "SERVER_ERROR";
+export const CLEAR_ERRORS = "CLEAR_ERRORS";
