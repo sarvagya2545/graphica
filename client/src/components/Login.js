@@ -44,7 +44,7 @@ const Login = ({ login, isAuthenticated }) => {
         </div>
         <button type="submit" className="btn btn-submit">Login</button>
       </form>
-      <Link to="/signup">Don't have an account? Sign Up!</Link>
+      <Link className="link link-blue underline" to="/signup">Don't have an account? Sign Up!</Link>
     </div>
   );
 }

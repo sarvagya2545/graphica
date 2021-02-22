@@ -5,10 +5,22 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
+    font-size: 1.4rem;
   }
 }
 
 .link {
   color: inherit;
   text-decoration: none;
+  font-size: inherit;
+
+  &-blue {
+    &:hover {
+      color: blue;
+    }
+  }
+}
+
+.underline {
+  text-decoration: underline;
 }

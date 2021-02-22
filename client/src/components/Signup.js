@@ -48,7 +48,7 @@ const Signup = ({ register, isAuthenticated }) => {
         </div>
         <button type="submit" className="btn btn-submit">Signup</button>
       </form>
-      <Link to="/login">Already having an account? Log in!</Link>
+      <Link className="link link-blue underline" to="/login">Already having an account? Log in!</Link>
     </div>
   );
 }
