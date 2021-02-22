@@ -1,4 +1,4 @@
-import { AUTH_ERROR, LOGIN_FAIL, LOGIN_SUCCESS, NO_USER_LOADED, REGISTER_FAIL, REGISTER_SUCCESS, USER_LOADED } from "../actions/types";
+import { AUTH_ERROR, LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT_SUCCESS, NO_USER_LOADED, REGISTER_FAIL, REGISTER_SUCCESS, USER_LOADED } from "../actions/types";
 
 const initState = {
   token: null,
@@ -20,6 +20,7 @@ const authReducer = (state = initState, action) => {
     case LOGIN_FAIL:
     case REGISTER_FAIL:
     case AUTH_ERROR:
+    case LOGOUT_SUCCESS: 
       return {
         ...state,
         isAuthenticated: false,

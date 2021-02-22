@@ -3,6 +3,7 @@ import {
   AUTH_ERROR,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
+  LOGOUT_SUCCESS,
   NO_ERRORS,
   NO_USER_LOADED,
   REGISTER_FAIL,
@@ -84,3 +85,12 @@ export const login = (formData) => (dispatch) => {
       }
     });
 };
+
+export const logout = () => dispatch => {
+  axios.post(`/users/logout`, {}, { withCredentials: true })
+    .then(res => {
+      console.log(res);
+      dispatch({ type: LOGOUT_SUCCESS })
+    })
+    .catch(err => console.log(err));
+}

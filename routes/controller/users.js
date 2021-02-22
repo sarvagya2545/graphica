@@ -87,6 +87,14 @@ module.exports = {
       res.status(500).json({errors: { err: "Server error" }});
     }
   },
+  logout: async (req,res) => {
+    try {
+      res.status(202).clearCookie('Auth').send('Logged out of the session');
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({errors: { err: "Server error" }});
+    }
+  },
   getUser: async (req,res) => {
     try {
       const user = req.user;

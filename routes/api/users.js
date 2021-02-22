@@ -30,6 +30,11 @@ router.route('/current')
   .get(passportJWT, UserController.getUser)
 ;
 
+// logout route
+router.route('/logout')
+  .post(UserController.logout)
+;
+
 router.route('/cookie')
   .get(UserController.sendCookie)
 ;
