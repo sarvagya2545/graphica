@@ -6,7 +6,7 @@ const Home = ({ isAuthenticated, user }) => {
   return (
     <div className="home">
       <div className="home-box">
-        <h1>Welcome to Graphica, {user}!</h1>
+        <h1>Welcome to Graphica{isAuthenticated && `, ${user}`}!</h1>
 
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio nesciunt consequatur nihil unde libero suscipit maxime, asperiores repudiandae odit aliquid!</p>
 
