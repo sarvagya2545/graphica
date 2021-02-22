@@ -28,7 +28,7 @@ const Signup = ({ register, isAuthenticated }) => {
     if(isAuthenticated) {
       history.push('/dashboard');
     }
-  }, []);
+  });
 
   return (
     <div className="container container-form">
