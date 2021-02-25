@@ -8,7 +8,11 @@ const Home = ({ isAuthenticated, user }) => {
       <div className="home-box">
         <h1>Welcome to Graphica{isAuthenticated && `, ${user}`}!</h1>
 
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio nesciunt consequatur nihil unde libero suscipit maxime, asperiores repudiandae odit aliquid!</p>
+        <p>
+            Buy and sell graphic images, vector art, illustrations and more for your online business. 
+            <br/>
+            Only at <strong>Graphica&#8482;</strong>
+        </p>
 
         {
           isAuthenticated ? (
