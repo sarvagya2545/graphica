@@ -99,6 +99,7 @@ module.exports = {
     try {
       const user = req.user;
       const token = signToken(user);
+      console.log('REACHED HERE!!!!');
 
       res.cookie('Auth', token, {
         maxAge: 24 * 60 * 60,
