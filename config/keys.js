@@ -1,4 +1,4 @@
 module.exports = {
-  mongoDBURL: process.env.NODE_ENV == 'production' ? process.env.MONGODB_URL_GLOBAL : process.env.MONGODB_URL_LOCAL,
+  mongoDBURL: process.env.MONGO_DB_URI,
   jwtSecret: process.env.JWT_SECRET
 }
