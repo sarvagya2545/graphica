@@ -5,6 +5,7 @@ app.disable('x-powered-by');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 
 const { mongoDBURL } = require('./config/keys');
 
@@ -27,6 +28,13 @@ mongoose
   .then(() => console.log('Connected to DB'))
   .catch((err) => console.log('Mongodb Connection error', err));
 
+// Serve static assets under production
+if(process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+  app.get('*', (req,res) => {
+      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  })
+}
 
 // Routes
 app.use('/api/users', require('./routes/api/users'));
