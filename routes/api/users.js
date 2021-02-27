@@ -26,7 +26,7 @@ router.route('/login')
 
 // get the user details from token
 router.route('/current')
-  .get(passportJWT, UserController.getUser)
+  .get(debugMiddleware, passportJWT, UserController.getUser)
 ;
 
 // logout route
