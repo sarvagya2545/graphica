@@ -15,7 +15,7 @@ export const loadUser = () => (dispatch) => {
   axios
     .get("/api/users/current", {
       withCredentials: true,
-      headers: { "content-type": "application/json", "Accept": "application/json" },
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
     })
     .then((res) => {
       console.log(res);
