@@ -20,7 +20,7 @@ const DashBoard = ({ email, logout }) => {
 
 const mapStateToProps = state => {
   return {
-    email: state.auth.user.auth.email
+    email: state.auth.user?.auth.email
   }
 }
 
