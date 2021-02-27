@@ -39,7 +39,7 @@ router.route('/cookie')
 ;
 
 router.route('/secret')
-  .get(passportJWT, UserController.secret)
+  .get(debugMiddleware, passportJWT, UserController.secret)
 ; 
 
 module.exports = router;
