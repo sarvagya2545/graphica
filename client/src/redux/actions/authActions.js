@@ -12,7 +12,7 @@ import {
 } from "./types";
 
 export const loadUser = () => dispatch => {
-  axios.get('/users/current', { withCredentials: true })
+  axios.get('/api/users/current', { withCredentials: true })
     .then(res => {
       console.log(res);
       dispatch({ type: USER_LOADED, payload: res.data })
@@ -25,7 +25,7 @@ export const loadUser = () => dispatch => {
 
 export const register = (formData) => (dispatch) => {
   axios
-    .post(`/users/signup`, formData, { withCredentials: true })
+    .post(`/api/users/signup`, formData, { withCredentials: true })
     .then((res) => {
       console.log(res);
       dispatch({ type: REGISTER_SUCCESS, payload: res.data });
@@ -50,7 +50,7 @@ export const register = (formData) => (dispatch) => {
 
 export const login = (formData) => (dispatch) => {
   axios
-    .post(`/users/login`, formData, { withCredentials: true })
+    .post(`/api/users/login`, formData, { withCredentials: true })
     .then((res) => {
       console.log(res);
       dispatch({ type: LOGIN_SUCCESS, payload: res.data });
@@ -87,7 +87,7 @@ export const login = (formData) => (dispatch) => {
 };
 
 export const logout = () => dispatch => {
-  axios.post(`/users/logout`, {}, { withCredentials: true })
+  axios.post(`/api/users/logout`, {}, { withCredentials: true })
     .then(res => {
       console.log(res);
       dispatch({ type: LOGOUT_SUCCESS })
