@@ -105,7 +105,9 @@ module.exports = {
         maxAge: 24 * 60 * 60,
         httpOnly: true,
         sameSite: 'strict'
-      }).json({ token, user });
+      });
+      
+      res.status(200).json({ token, user });
     } catch (error) {
       console.log(error);
       res.status(500).json({errors: { err: "Server error" }}); 
