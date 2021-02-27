@@ -14,7 +14,8 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
+if(!process.env.NODE_ENV)
+  app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
 app.use(cookieParser());
 
 require('./config/passport');
