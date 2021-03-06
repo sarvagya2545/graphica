@@ -29,6 +29,9 @@ mongoose
   .then(() => console.log('Connected to DB'))
   .catch((err) => console.log('Mongodb Connection error', err));
 
+// Routes
+app.use('/api/users', require('./routes/api/users'));
+
 // Serve static assets under production
 if(process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
@@ -36,8 +39,5 @@ if(process.env.NODE_ENV === 'production') {
       res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   })
 }
-
-// Routes
-app.use('/api/users', require('./routes/api/users'));
 
 app.listen(PORT, () => console.log(`Server started at port ${PORT}`));
