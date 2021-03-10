@@ -56,7 +56,6 @@ designSchema.methods.addTags = function ( tagsArr ){
     this.tags=[];
     temp.forEach(tag=>{
         this.tags.push(tag);
-        console.log(this.tags);
     })
 }
 

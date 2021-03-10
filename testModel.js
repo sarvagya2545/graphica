@@ -105,3 +105,13 @@ Design.findById('6048bcaceca4081cccb65e4e',function(err,design){
   
 });
 */
+/*
+Design.find({tags:['hello','world']},function(err,res){
+  if(err){
+    console.log(err);
+  }
+  else{
+    console.log(res);
+  }
+});
+*/
