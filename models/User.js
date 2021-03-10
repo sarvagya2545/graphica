@@ -8,8 +8,17 @@ const userSchema = new mongoose.Schema({
       enum: ["local", "google", "facebook"],
       required: true,
     },
+    role: {
+      type: String,
+      enum: ['Customer', 'Designer', 'Admin'],
+      default: 'Customer'
+    }
   },
   auth: {
+    username: {
+      type: String,
+      required: true
+    },
     email: {
       type: String,
       required: true,
