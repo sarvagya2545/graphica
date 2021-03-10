@@ -48,5 +48,17 @@ designSchema.methods.rate = function( Obj ){
     }
 }
 
+designSchema.methods.addTags = function ( tagsArr ){
+    this.tags.forEach(tag=>{
+        tagsArr.push(tag);
+    });
+    var temp= new Set(tagsArr);
+    this.tags=[];
+    temp.forEach(tag=>{
+        this.tags.push(tag);
+        console.log(this.tags);
+    })
+}
+
 const Design = mongoose.model( 'design' , designSchema );
 module.exports = Design;
