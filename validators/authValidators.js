@@ -1,5 +1,12 @@
 const { body } = require("express-validator");
 
+const checkAlphaNumeric = val => {
+  const regex = /^[a-zA-Z0-9_]+$/;
+  const result = val.match(regex);
+  return result !== null;
+}
+
+
 const signupValidationRules = () => {
   return [
     body("email")
@@ -9,6 +16,14 @@ const signupValidationRules = () => {
       .bail()
       .isEmail()
       .withMessage("The input is not a valid email."),
+
+    body("username")
+      .trim()
+      .notEmpty()
+      .withMessage("Username field cannot be empty")
+      .bail()
+      .custom(checkAlphaNumeric)
+      .withMessage("Username can only have alphabets and numbers and underscore"),
 
     body("password")
       .trim()

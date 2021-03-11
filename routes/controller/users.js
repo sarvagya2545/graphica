@@ -16,12 +16,17 @@ const signToken = (user) => {
 module.exports = {
   signup: async (req,res) => {
     try {
-      const { email, password } = req.body;
+      const { username, email, password } = req.body;
 
-      const findUser = await User.findOne({ "auth.email": email });
+      const findEmailUser = await User.findOne({ "auth.email": email });
+      const findUsernameUser = await User.findOne({ "auth.username": username });
 
-      if(findUser) {
+      if(findEmailUser) {
         return res.status(400).json({errors: { email: 'Email is already in use' }});
+      }
+
+      if(findUsernameUser) {
+        return res.status(400).json({errors: { username: 'The given username is already taken' }});
       }
 
       const salt = await bcrypt.genSalt(10);
@@ -32,6 +37,7 @@ module.exports = {
           method: 'local'
         },
         auth: {
+          username,
           email,
           local: {
             password: hashedPassword
@@ -47,7 +53,8 @@ module.exports = {
       const userDetails = {
         config: user.config,
         auth: {
-          email: user.auth.email
+          email: user.auth.email,
+          username: user.auth.username
         },
         id: user._id
       }
