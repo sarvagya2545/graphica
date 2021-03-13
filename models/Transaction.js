@@ -9,7 +9,7 @@ const transactionSchema = new mongoose.Schema({
         type: Number,
     },
     items: [{
-        type: mongoose.Schema.Types.ObjectId,      //Send Designer ID here
+        type: mongoose.Schema.Types.ObjectId,      //Send Design ID here
         ref: 'Design',
         required: true,
     }],
