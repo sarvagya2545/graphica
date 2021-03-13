@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
-const { Schema } = require("mongoose");
-const Design = require('./Design.js');
 const Float = require('mongoose-float');
 
 const designerSchema = new mongoose.Schema({
@@ -40,11 +38,6 @@ const designerSchema = new mongoose.Schema({
       enum: ["local", "google", "facebook"],
       required: true,
     },
-    /*role: {
-      type: String,
-      enum: ['Customer', 'Designer', 'Admin'],
-      default: 'Customer'
-    }*/
   },
   auth: {
     username: {
