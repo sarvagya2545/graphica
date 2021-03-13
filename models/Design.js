@@ -1,11 +1,16 @@
 const mongoose=require('mongoose');
 const Float=require('mongoose-float').loadType(mongoose);
-const User=require('./User.js');
+const Designer=require('./Designer');
+const User=require('./User');
 
 const designSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+    },
     designer: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Designer',
         required: true,
     },
     currentRating: {
@@ -30,14 +35,15 @@ const designSchema = new mongoose.Schema({
             required: true,
         },
     }],
+    price: {
+        type: Number,
+        required: true,
+    }
 });
 
 designSchema.methods.rate = function( Obj ){
-    if(Obj.id==this.designer){
-        console.log("Designer cant rate");
-    }
-    else if( this.ratedBy.some( users => users.id == Obj.id )){
-        let ratedByObj = this.ratedBy.find( users => users.id == Obj.id );
+    if( this.ratedBy.some( user => user.id == Obj.id )){
+        let ratedByObj = this.ratedBy.find( user => user.id == Obj.id );
         this.currentRating = ( this.numberOfRatings*this.currentRating + Obj.rating - ratedByObj.rating )/(this.numberOfRatings);
         ratedByObj.rating=Obj.rating;
     }
