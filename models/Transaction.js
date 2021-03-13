@@ -8,11 +8,11 @@ const transactionSchema = new mongoose.Schema({
     amount: {
         type: Number,
     },
-    items: {
+    items: [{
         type: mongoose.Schema.Types.ObjectId,      //Send Designer ID here
         ref: 'Design',
         required: true,
-    },
+    }],
     customer: {type: mongoose.Schema.Types.ObjectId,      //Send Customer ID here
         ref: 'Customer',
         required: true,
