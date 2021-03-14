@@ -1,13 +1,16 @@
 const mongoose = require('mongoose');
 const Design = require('./Design');
 const User = require('./User');
+const Designer = require('./Designer');
+const { Schema } = require('mongoose');
+const Float = require('mongoose-float').loadType(mongoose,2);
 const transactionSchema = new mongoose.Schema({
     transactionID: {
         type: String,
         required: true
     },
     amount: {
-        type: Number,
+        type: Float,
         required: true,
     },
     items: [{
@@ -21,9 +24,14 @@ const transactionSchema = new mongoose.Schema({
           required: true,
         },
         price: {
-          type: Number,
+          type: Float,
           required: true,
         },
+        designer: {
+          type: Schema.Types.ObjectId,
+          ref: 'Designer',
+          required: true,
+        }
       }],
     user: {type: mongoose.Schema.Types.ObjectId,      //Send Customer ID here
         ref: 'User',

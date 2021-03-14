@@ -1,5 +1,5 @@
 const mongoose=require('mongoose');
-const Float=require('mongoose-float').loadType(mongoose);
+const Float=require('mongoose-float').loadType(mongoose,2);
 const Designer=require('./Designer');
 const User=require('./User');
 
@@ -36,7 +36,7 @@ const designSchema = new mongoose.Schema({
         },
     }],
     price: {
-        type: Number,
+        type: Float,
         required: true,
     }
 });

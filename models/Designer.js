@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { Schema } = require("mongoose");
 const Design = require('./Design');
 const User=require('./User');
-const Float = require('mongoose-float');
+const Float = require('mongoose-float').loadType(mongoose,2);
 
 const designerSchema = new mongoose.Schema({
   name: {
@@ -15,7 +15,7 @@ const designerSchema = new mongoose.Schema({
     default: false,
   },
   balance: {
-    type: Number,
+    type: Float,
     default: 0,
   },
   currentRating: {

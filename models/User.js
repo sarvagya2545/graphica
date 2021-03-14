@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
 const { Schema } = require("mongoose");
 const Design = require('./Design.js');
-const Float = require('mongoose-float');
+const Float = require('mongoose-float').loadType(mongoose,2);
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -19,9 +19,14 @@ const userSchema = new mongoose.Schema({
       required: true,
     },
     price: {
-      type: Number,
+      type: Float,
       required: true,
     },
+    designer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Designer',
+      required: true,
+    }
   }],
   config: {
     method: {
