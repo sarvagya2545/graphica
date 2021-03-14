@@ -15,6 +15,10 @@ const paymentSchema = new mongoose.Schema({
     amount: {
         type: Float,
         required: true,
+    },
+    token: {
+        type: String,
+        required: true,
     }
 });
 

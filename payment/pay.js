@@ -1,9 +1,8 @@
 "strict"
 
-
-
 const payment=function(app){
 
+    const { URL, URLSearchParams } = require('url');
     const paypal = require('paypal-rest-sdk');
     const passport = require('passport');
     const User = require('../models/User');
@@ -61,23 +60,26 @@ const payment=function(app){
           if (error) {
             throw error;
           } else {
-            
-            const paymentInstance = new Payment({
-              paymentid: payment.id,
-              amount: amount,
-              userid: req.user._id,
-            });
-
-            paymentInstance.save((err) =>{
-              if(err){
-                console.log(err);
-                throw err;
-              }else{
-                console.log('Saved payment');
-              }
-            });
+            console.log(payment);
             for (let i = 0; i < payment.links.length; i++) {
               if (payment.links[i].rel === "approval_url") {
+
+                const myURL = new URL(payment.links[i].href);
+
+                const paymentInstance = new Payment({
+                  paymentid: payment.id,
+                  amount: amount,
+                  userid: req.user._id,
+                  token: myURL.searchParams.get('token'),
+                });
+                paymentInstance.save((err) =>{
+                  if(err){
+                    console.log(err);
+                    throw err;
+                  }else{
+                    console.log('Saved payment');
+                  }
+                });
                 res.redirect(payment.links[i].href);
               }
             }
@@ -153,8 +155,6 @@ const payment=function(app){
                       console.log(err);
                     }
                   });
-
-
                 }
               })
             }
@@ -163,7 +163,39 @@ const payment=function(app){
       });
       
     });
-    app.get("/cancel", (req, res) => res.send("Cancelled"));
+    app.get("/cancel", (req, res) =>{
+      const token=req.query.token;
+      Payment.findOneAndDelete({token: token}, function (err, payment) {
+        if(err){
+          console.log(err);
+        }else{
+          let amount = payment.amount;
+          let userid = payment.userid; 
+          let paymentId= payment.paymentid;
+          User.findById(userid,function(err,user){
+            if(err){
+              console.log(err);
+            }else{
+              const transaction = new Transaction({
+                transactionID: paymentId,
+                amount: amount,
+                items: user.cart,
+                user: userid,
+                isSuccessful: false,
+              });
+              transaction.save((err) =>{
+                if(err){
+                  console.log(err);
+                }else{
+                  console.log('success');
+                }
+              });
+            }
+          });
+        }
+      });
+    res.send('Cancel');
+    });
 }
 
 module.exports=payment;

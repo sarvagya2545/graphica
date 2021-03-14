@@ -32,6 +32,7 @@ mongoose
 // Routes
 app.use('/api/users', require('./routes/api/users'));
 require('./payment/pay.js')(app);
+require('./payment/withdraw')(app);
 
 // Serve static assets under production
 if(process.env.NODE_ENV === 'production') {
