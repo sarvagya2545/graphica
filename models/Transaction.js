@@ -1,18 +1,38 @@
 const mongoose = require('mongoose');
-
+const Design = require('./Design');
+const User = require('./User');
+const Designer = require('./Designer');
+const { Schema } = require('mongoose');
+const Float = require('mongoose-float').loadType(mongoose,2);
 const transactionSchema = new mongoose.Schema({
     transactionID: {
         type: String,
-        
+        required: true
     },
     amount: {
-        type: Number,
+        type: Float,
+        required: true,
     },
     items: [{
-        type: mongoose.Schema.Types.ObjectId,      //Send Design ID here
-        ref: 'Design',
-        required: true,
-    }],
+        id: {
+          type: Schema.Types.ObjectId,
+          ref: 'Design',
+          required: true,
+        },
+        name: {
+          type: String,
+          required: true,
+        },
+        price: {
+          type: Float,
+          required: true,
+        },
+        designer: {
+          type: Schema.Types.ObjectId,
+          ref: 'Designer',
+          required: true,
+        }
+      }],
     customer: {type: mongoose.Schema.Types.ObjectId,      //Send Customer ID here
         ref: 'Customer',
         required: true,
@@ -27,5 +47,5 @@ const transactionSchema = new mongoose.Schema({
     },
 });
 
-const Transaction = mongoose.model('transaction')
+const Transaction = mongoose.model('transaction',transactionSchema);
 module.exports = Transaction;
