@@ -15,9 +15,6 @@ const pay=function(app){
       'client_id':  process.env.CLIENT_ID,
       'client_secret': process.env.CLIENT_SECRET,
     });
-    app.get('/pay',passport.authenticate('jwt', { session: false }),(req,res)=>{
-        res.send('<form action="/pay" method="post"><input type="submit" value="Buy"></form> ');
-    });
     app.post("/pay", passport.authenticate('jwt', { session: false }), (req, res) =>{
       var items = [];
       let amount = 0;

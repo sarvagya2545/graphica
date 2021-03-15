@@ -16,11 +16,6 @@ const withdraw = function(app){
         }
     });
 
-
-    app.get('/withdraw',passport.authenticate('jwt', { session: false }),(req,res)=>{
-        res.send('<form action="/withdraw" method="post"> <input type="text" name="email"><input type="text" name="amount"><input type="submit" value="Withdraw"></form> ');
-    });
-
     app.post("/withdraw", passport.authenticate('jwt', { session: false }), (req, res) =>{
 
         Designer.findById(req.user._id,function(err,designer){
