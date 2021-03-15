@@ -1,14 +1,22 @@
 const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
-const Float = require('mongoose-float');
+const { Schema } = require("mongoose");
+const Design = require('./Design');
+const User=require('./User');
+const Float = require('mongoose-float').loadType(mongoose,2);
 
 const designerSchema = new mongoose.Schema({
   name: {
     type: String,
+    required: true,
   },
   verified: {
     type: Boolean,
     default: false,
+  },
+  balance: {
+    type: Float,
+    default: 0,
   },
   currentRating: {
     type: Float,
@@ -21,7 +29,7 @@ const designerSchema = new mongoose.Schema({
   ratedBy: [{
       id: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'Customer',
+          ref: 'User',
           required: true,
       },
       rating: {
@@ -71,11 +79,8 @@ designerSchema.methods.isValidPassword = async function (password) {
 }
 
 designerSchema.methods.rate = function( Obj ){
-  if(Obj.id==this._id){
-      console.log("Designer cant self rate");
-  }
-  else if( this.ratedBy.some( users => users.id == Obj.id )){
-      let ratedByObj = this.ratedBy.find( users => users.id == Obj.id );
+  if( this.ratedBy.some( user => user.id == Obj.id )){
+      let ratedByObj = this.ratedBy.find( user => user.id == Obj.id );
       this.currentRating = ( this.numberOfRatings*this.currentRating + Obj.rating - ratedByObj.rating )/(this.numberOfRatings);
       ratedByObj.rating=Obj.rating;
   }
