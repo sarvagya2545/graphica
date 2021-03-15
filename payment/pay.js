@@ -92,69 +92,78 @@ const pay=function(app){
     app.get("/success", (req, res) => {
       const payerId = req.query.PayerID;
       const paymentId = req.query.paymentId;
-      Payment.findOneAndDelete({paymentid: paymentId}, function (err, currentPayment) { 
+      Payment.find({}, function (err, currentPayments) { 
         if (err){ 
             console.log(err) 
         } 
         else{ 
-          let amount = currentPayment.amount;
-          let userid=currentPayment.userid; 
-          const execute_payment_json = {
-            payer_id: payerId,
-            transactions: [
-              {
-                amount: {
-                  currency: "USD",
-                  total: amount,
-                },
-              },
-            ],
-          };
-          paypal.payment.execute(paymentId, execute_payment_json, function (error,payment){
-            if (error) {
-              console.log(error.response);
-              throw error;
-            } else {
-              res.send("Success");
-              User.findById(userid,function(Err,user){
-                if(Err){
-                  console.log(Err);
-                }else{
-                  let cart=user.cart;
-                  cart.forEach(item=>{
-                    Designer.findById(item.designer,function(ERR,designer){
-                      if(ERR){
-                        console.log(ERR);
-                      }else{
-                        let balance = designer.balance;
-                        balance=balance+item.price;
-                        Designer.updateOne( {_id:designer._id},{balance: balance},function(Error,resp){
-                          if(Error){
-                            console.log(Error);
+          currentPayments.forEach(currentPayment=>{
+            if(currentPayment.paymentid==paymentId){
+              let amount = currentPayment.amount;
+              let userid=currentPayment.userid; 
+              const execute_payment_json = {
+                payer_id: payerId,
+                transactions: [
+                  {
+                    amount: {
+                      currency: "USD",
+                      total: amount,
+                    },
+                  },
+                ],
+              };
+              paypal.payment.execute(paymentId, execute_payment_json, function (error,payment){
+                if (error) {
+                  console.log(error.response);
+                  throw error;
+                } else {
+                  res.send("Success");
+                  User.findById(userid,function(Err,user){
+                    if(Err){
+                      console.log(Err);
+                    }else{
+                      let cart=user.cart;
+                      cart.forEach(item=>{
+                        Designer.findById(item.designer,function(ERR,designer){
+                          if(ERR){
+                            console.log(ERR);
+                          }else{
+                            let balance = designer.balance;
+                            balance=balance+item.price;
+                            Designer.updateOne( {_id:designer._id},{balance: balance},function(Error,resp){
+                              if(Error){
+                                console.log(Error);
+                              }
+                            });
                           }
                         });
-                      }
-                    });
-                  });
-                  const transaction = new Transaction({
-                    transactionID: paymentId,
-                    amount: amount,
-                    items: user.cart,
-                    user: userid,
-                    isSuccessful: true,
-                  });
-                  transaction.save((ERr) =>{
-                    if(ERr){
-                      console.log(ERr);
-                    }else{
-                      console.log('success');
+                      });
+                      const transaction = new Transaction({
+                        transactionID: paymentId,
+                        amount: amount,
+                        items: user.cart,
+                        user: userid,
+                        isSuccessful: true,
+                      });
+                      transaction.save((ERr) =>{
+                        if(ERr){
+                          console.log(ERr);
+                        }else{
+                          console.log('success');
+                        }
+                      });
+                      User.updateOne( {_id:user._id},{cart: []},function(ERRor,RES){
+                        if(ERRor){
+                          console.log(ERRor);
+                        }
+                      });
                     }
-                  });
-                  User.updateOne( {_id:user._id},{cart: []},function(ERRor,RES){
-                    if(ERRor){
-                      console.log(ERRor);
-                    }
-                  });
+                  })
+                }
+              });
+              Payment.findByIdAndDelete(currentPayment._id,function(ErR,doc){
+                if(ErR){
+                  console.log(ErR);
                 }
               })
             }
@@ -184,7 +193,7 @@ const pay=function(app){
                 isSuccessful: false,
               });
               transaction.save((ERRor) =>{
-                if(err){
+                if(ERRor){
                   console.log(ERRor);
                 }else{
                   console.log('success');
