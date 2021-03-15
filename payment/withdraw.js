@@ -54,9 +54,9 @@ const withdraw = function(app){
                         } else {
                             res.send('Success');
                             let updatedBalance=designer.balance-req.body.amount;
-                            Designer.updateOne( {_id:req.user._id},{balance: updatedBalance},function(err,res){
-                                if(err){
-                                  console.log(err);
+                            Designer.updateOne( {_id:req.user._id},{balance: updatedBalance},function(ERR,RES){
+                                if(ERR){
+                                  console.log(RES);
                                 }
                               });
                         }

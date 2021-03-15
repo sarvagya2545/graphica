@@ -1,8 +1,8 @@
 "strict"
 
-const payment=function(app){
+const pay=function(app){
 
-    const { URL, URLSearchParams } = require('url');
+    const { URL} = require('url');
     const paypal = require('paypal-rest-sdk');
     const passport = require('passport');
     const User = require('../models/User');
@@ -61,10 +61,10 @@ const payment=function(app){
             throw error;
           } else {
             console.log(payment);
-            for (let i = 0; i < payment.links.length; i++) {
-              if (payment.links[i].rel === "approval_url") {
+            for(var link of payment.links){
+              if (link.rel === "approval_url") {
 
-                const myURL = new URL(payment.links[i].href);
+                const myURL = new URL(link.href);
 
                 const paymentInstance = new Payment({
                   paymentid: payment.id,
@@ -80,7 +80,7 @@ const payment=function(app){
                     console.log('Saved payment');
                   }
                 });
-                res.redirect(payment.links[i].href);
+                res.redirect(link.href);
               }
             }
           }
@@ -92,13 +92,13 @@ const payment=function(app){
     app.get("/success", (req, res) => {
       const payerId = req.query.PayerID;
       const paymentId = req.query.paymentId;
-      Payment.findOneAndDelete({paymentid: paymentId}, function (err, payment) { 
+      Payment.findOneAndDelete({paymentid: paymentId}, function (err, currentPayment) { 
         if (err){ 
             console.log(err) 
         } 
         else{ 
-          let amount = payment.amount;
-          let userid=payment.userid; 
+          let amount = currentPayment.amount;
+          let userid=currentPayment.userid; 
           const execute_payment_json = {
             payer_id: payerId,
             transactions: [
@@ -116,21 +116,21 @@ const payment=function(app){
               throw error;
             } else {
               res.send("Success");
-              User.findById(userid,function(err,user){
-                if(err){
-                  console.log(err);
+              User.findById(userid,function(Err,user){
+                if(Err){
+                  console.log(Err);
                 }else{
                   let cart=user.cart;
                   cart.forEach(item=>{
-                    Designer.findById(item.designer,function(err,designer){
-                      if(err){
-                        console.log(err);
+                    Designer.findById(item.designer,function(ERR,designer){
+                      if(ERR){
+                        console.log(ERR);
                       }else{
                         let balance = designer.balance;
                         balance=balance+item.price;
-                        Designer.updateOne( {_id:designer._id},{balance: balance},function(err,res){
-                          if(err){
-                            console.log(err);
+                        Designer.updateOne( {_id:designer._id},{balance: balance},function(Error,resp){
+                          if(Error){
+                            console.log(Error);
                           }
                         });
                       }
@@ -143,16 +143,16 @@ const payment=function(app){
                     user: userid,
                     isSuccessful: true,
                   });
-                  transaction.save((err) =>{
-                    if(err){
-                      console.log(err);
+                  transaction.save((ERr) =>{
+                    if(ERr){
+                      console.log(ERr);
                     }else{
                       console.log('success');
                     }
                   });
-                  User.updateOne( {_id:user._id},{cart: []},function(err,res){
-                    if(err){
-                      console.log(err);
+                  User.updateOne( {_id:user._id},{cart: []},function(ERRor,RES){
+                    if(ERRor){
+                      console.log(ERRor);
                     }
                   });
                 }
@@ -172,9 +172,9 @@ const payment=function(app){
           let amount = payment.amount;
           let userid = payment.userid; 
           let paymentId= payment.paymentid;
-          User.findById(userid,function(err,user){
-            if(err){
-              console.log(err);
+          User.findById(userid,function(ERR,user){
+            if(ERR){
+              console.log(ERR);
             }else{
               const transaction = new Transaction({
                 transactionID: paymentId,
@@ -183,9 +183,9 @@ const payment=function(app){
                 user: userid,
                 isSuccessful: false,
               });
-              transaction.save((err) =>{
+              transaction.save((ERRor) =>{
                 if(err){
-                  console.log(err);
+                  console.log(ERRor);
                 }else{
                   console.log('success');
                 }
@@ -198,4 +198,4 @@ const payment=function(app){
     });
 }
 
-module.exports=payment;
+module.exports=pay;
