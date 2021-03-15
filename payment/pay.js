@@ -174,29 +174,38 @@ const pay=function(app){
     });
     app.get("/cancel", (req, res) =>{
       const token=req.query.token;
-      Payment.findOneAndDelete({token: token}, function (err, payment) {
+      Payment.find({}, function (err, payments) {
         if(err){
           console.log(err);
         }else{
-          let amount = payment.amount;
-          let userid = payment.userid; 
-          let paymentId= payment.paymentid;
-          User.findById(userid,function(ERR,user){
-            if(ERR){
-              console.log(ERR);
-            }else{
-              const transaction = new Transaction({
-                transactionID: paymentId,
-                amount: amount,
-                items: user.cart,
-                user: userid,
-                isSuccessful: false,
-              });
-              transaction.save((ERRor) =>{
-                if(ERRor){
-                  console.log(ERRor);
+          payments.forEach(payment=>{
+            if(payment.token==token){
+              let amount = payment.amount;
+              let userid = payment.userid; 
+              let paymentId= payment.paymentid;
+              User.findById(userid,function(ERR,user){
+                if(ERR){
+                  console.log(ERR);
                 }else{
-                  console.log('success');
+                  const transaction = new Transaction({
+                    transactionID: paymentId,
+                    amount: amount,
+                    items: user.cart,
+                    user: userid,
+                    isSuccessful: false,
+                  });
+                  transaction.save((ERRor) =>{
+                    if(ERRor){
+                      console.log(ERRor);
+                    }else{
+                      console.log('success');
+                    }
+                  });
+                }
+              });
+              Payment.findByIdAndDelete(payment._id,function(ErR,doc){
+                if(ErR){
+                  console.log(ErR);
                 }
               });
             }
