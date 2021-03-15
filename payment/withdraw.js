@@ -19,9 +19,7 @@ const withdraw = function(app){
     app.post("/withdraw", passport.authenticate('jwt', { session: false }), (req, res) =>{
 
         Designer.findById(req.user._id,function(err,designer){
-            if(err){
-                console.log(err);
-            }else if(designer.balance>=req.body.amount&&req.body.amount>0){
+            if(designer.balance>=req.body.amount&&req.body.amount>0&&!err){
                 var sender_batch_id = Math.random().toString(36).substring(9);
                 var create_payout_json = {
                     "sender_batch_header": {
@@ -56,7 +54,8 @@ const withdraw = function(app){
                     }
                 });
             }else{
-                res.status(400).json({err:'Insufficient Balance'});
+                //Insufficient Balance
+                res.status(400).json({err:err.message});
             }
         });
     });
