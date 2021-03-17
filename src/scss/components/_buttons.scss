@@ -1,0 +1,19 @@
+.btn {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.8rem;
+
+  &-submit {
+    background-color: $color-primary;
+    color: #fff;
+    padding: 1.4rem 1.5rem;
+    transition: all .2s ease;
+
+    &:hover {
+      box-shadow: 0 5px 10px rgba(#000, 0.3);
+    }
+  }
+}
