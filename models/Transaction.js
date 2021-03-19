@@ -27,7 +27,7 @@ const transactionSchema = new mongoose.Schema({
         },
         designer: {
             type: mongoose.Schema.Types.ObjectId, 
-            ref: 'Design',
+            ref: 'Designer',
             required: true
         }
     }],
