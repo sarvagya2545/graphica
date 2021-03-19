@@ -9,6 +9,12 @@ const checkAlphaNumeric = val => {
 
 const signupValidationRules = () => {
   return [
+    body("name")
+      .trim()
+      .notEmpty()
+      .withMessage("Name field cannot be empty")
+      .bail(),
+
     body("email")
       .trim()
       .notEmpty()
@@ -40,13 +46,11 @@ const signupValidationRules = () => {
 
 const loginValidationRules = () => {
   return [
-    body("email")
+    body("usernameOrEmail")
     .trim()
     .notEmpty()
-    .withMessage("Email field cannot be empty")
-    .bail()
-    .isEmail()
-    .withMessage("The input is not a valid email."),
+    .withMessage("Enter either a username or email")
+    .bail(),
 
     body("password")
       .trim()

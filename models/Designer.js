@@ -1,8 +1,5 @@
 const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
-const { Schema } = require("mongoose");
-const Design = require('./Design');
-const User=require('./User');
 const Float = require('mongoose-float').loadType(mongoose,2);
 
 const designerSchema = new mongoose.Schema({
@@ -26,19 +23,23 @@ const designerSchema = new mongoose.Schema({
       type: Number,
       default: 0,
   },
-  ratedBy: [{
+  ratedBy: {
+    type: [{
       id: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
+          ref: 'Customer',
           required: true,
       },
       rating: {
           type:Float,
           required: true,
       },
-  }],
+    }],
+    default: []
+  },
   description: {
     type: String,
+    default: 'Hey there! I am a designer at Graphica!'
   },
   config: {
     method: {

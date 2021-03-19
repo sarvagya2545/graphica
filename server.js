@@ -30,9 +30,9 @@ mongoose
   .catch((err) => console.log('Mongodb Connection error', err));
 
 // Routes
-app.use('/api/users', require('./routes/api/users'));
-require('./payment/pay.js')(app);
-require('./payment/withdraw')(app);
+app.use('/api/auth', require('./routes/api/auth'));
+// require('./payment/pay.js')(app);
+// require('./payment/withdraw')(app);
 
 // Serve static assets under production
 if(process.env.NODE_ENV === 'production') {

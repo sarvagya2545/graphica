@@ -2,7 +2,8 @@ const passport = require("passport");
 const { Strategy: JwtStrategy } = require("passport-jwt");
 const { Strategy: LocalStrategy } = require("passport-local");
 const { Strategy: GoogleTokenStrategy } = require("passport-google-token");
-const User = require("../models/User");
+const Customer = require('../models/Customer');
+const Designer = require('../models/Designer');
 const { jwtSecret } = require("./keys");
 
 const cookieExtractor = (req) => {
@@ -22,22 +23,26 @@ passport.use(
         },
         async (payload, done) => {
             try {
-                console.log(payload);
+                const [ role, id ] = payload.sub.split('-');
 
-                // Find the user specified in token
-                const user = await User.findById(payload.sub).select(
-                    "-auth.local.password"
-                );
+                console.log(id, role);
 
-                console.log(user);
+                if(role === 'Des') {
+                    const designer = await Designer.findById(id).select("-auth.local.password");
+                    if (!designer) {
+                        return done(null, false);
+                    }
 
-                // If user doesn't exists, handle it
-                if (!user) {
-                    return done(null, false);
+                    return done(null,designer);
+                } else {
+                    const customer = await Customer.findById(id).select("-auth.local.password");
+                    console.log(customer);
+                    if (!customer) {
+                        return done(null, false);
+                    }    
+
+                    return done(null, customer);
                 }
-
-                // Otherwise, return the user
-                done(null, user);
             } catch (error) {
                 console.log(error);
                 done(error, false);
@@ -50,20 +55,26 @@ passport.use(
 passport.use(
     new LocalStrategy(
         {
-            usernameField: "email",
+            usernameField: "usernameOrEmail",
         },
-        async (email, password, done) => {
+        async (usernameOrEmail, password, done) => {
             try {
-                // find the user in db
-                const foundUser = await User.findOne({
-                    "auth.email": email,
-                });
+                // find the user in db by email or username
+                const findEmailCustomer = await Customer.findOne({ "auth.email": usernameOrEmail });
+                const findEmailDesigner = await Designer.findOne({ "auth.email": usernameOrEmail });
+                const findUsernameCustomer = await Customer.findOne({ "auth.username": usernameOrEmail });
+                const findUsernameDesigner = await Designer.findOne({ "auth.username": usernameOrEmail });
 
+                let foundUser = findEmailDesigner || findEmailCustomer || findUsernameCustomer || findUsernameDesigner;
+
+                const isDesigner = findEmailDesigner || findUsernameDesigner;
+                const role = isDesigner ? 'desginer' : 'customer';
+                
                 // If not, handle it
                 if (!foundUser) {
                     return done(null, false);
                 }
-
+                
                 // return error if the user is having social login
                 if (foundUser.config.method !== "local") {
                     return done(null, false);
@@ -77,8 +88,13 @@ passport.use(
                     return done(null, false);
                 }
 
+                userdetails = {
+                    ...foundUser._doc,
+                    role
+                }
+
                 // Otherwise, return the user
-                done(null, foundUser);
+                done(null, userdetails);
             } catch (error) {
                 done(error, false);
             }

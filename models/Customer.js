@@ -1,16 +1,15 @@
 const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
-const { Schema } = require("mongoose");
-const Design = require('./Design.js');
 const Float = require('mongoose-float').loadType(mongoose,2);
 
-const userSchema = new mongoose.Schema({
+const customerSchema = new mongoose.Schema({
   name: {
     type: String,
+    required: true
   },
   cart: [{
     id: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Design',
       required: true,
     },
@@ -34,11 +33,6 @@ const userSchema = new mongoose.Schema({
       enum: ["local", "google", "facebook"],
       required: true,
     },
-    role: {
-      type: String,
-      enum: ['Customer', 'Designer', 'Admin'],
-      default: 'Customer'
-    }
   },
   auth: {
     username: {
@@ -62,7 +56,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.methods.isValidPassword = async function (password) {
+customerSchema.methods.isValidPassword = async function (password) {
   // this points to User model
   try {
       return await bcrypt.compare(password, this.auth.local.password);
@@ -71,6 +65,6 @@ userSchema.methods.isValidPassword = async function (password) {
   }
 }
 
-const User = mongoose.model('user', userSchema);
+const Customer = mongoose.model('customer', customerSchema);
 
-module.exports = User;
+module.exports = Customer;
