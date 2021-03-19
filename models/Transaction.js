@@ -40,7 +40,7 @@ const transactionSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    isSuccessful: {
+    isCompleted: {
         type: Boolean,
         default: false,
     },
