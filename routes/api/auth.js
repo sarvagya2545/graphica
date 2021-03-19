@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
-const UserController = require('../controller/users');
+const AuthController = require('../controller/auth');
 const { signupValidationRules, loginValidationRules } = require('../../validators/authValidators');
 const validate = require('../../validators/validate');
 
@@ -12,34 +12,39 @@ const debugMiddleware = (req,res, next) => {
   console.log(req.body);
   console.log(req.headers);
   console.log(req.cookies);
-  console.log(req);
+  console.log('THIS ROUTE GOT CALLED')
+  // console.log(req);
   next();
 }
 
-router.route('/signup')
-  .post(signupValidationRules(), validate, UserController.signup)
+router.route('/customer/signup')
+  .post(signupValidationRules(), validate, AuthController.signup('customer'))
+;
+
+router.route('/designer/signup')
+  .post(signupValidationRules(), validate, AuthController.signup('designer'))
 ;
 
 router.route('/login')
-  .post(loginValidationRules(), validate, PassportSignIn, UserController.login)
+  .post(loginValidationRules(), validate, PassportSignIn, AuthController.login)
 ;
 
 // get the user details from token
 router.route('/current')
-  .get(passportJWT, UserController.getUser)
+  .get(passportJWT, AuthController.getUser)
 ;
 
 // logout route
 router.route('/logout')
-  .post(UserController.logout)
+  .post(AuthController.logout)
 ;
 
 router.route('/cookie')
-  .get(UserController.sendCookie)
+  .get(AuthController.sendCookie)
 ;
 
 router.route('/secret')
-  .get(debugMiddleware, passportJWT, UserController.secret)
+  // .get(debugMiddleware, passportJWT, AuthController.secret)
 ; 
 
 module.exports = router;

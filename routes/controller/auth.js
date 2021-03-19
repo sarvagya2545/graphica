@@ -1,11 +1,12 @@
-const User = require("../../models/User");
+const Designer = require("../../models/Designer");
+const Customer = require("../../models/Customer");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { jwtSecret } = require('../../config/keys');
 
-const signToken = (user) => {
+const signToken = (sub) => {
   return jwt.sign({
-    sub: user._id,
+    sub,
     iss: 'Graphica',
     iat: new Date().getTime()
   }, jwtSecret, {
@@ -14,25 +15,33 @@ const signToken = (user) => {
 }
 
 module.exports = {
-  signup: async (req,res) => {
+  signup: (role) => async (req,res) => {
     try {
-      const { username, email, password } = req.body;
+      const { name, username, email, password } = req.body;
 
-      const findEmailUser = await User.findOne({ "auth.email": email });
-      const findUsernameUser = await User.findOne({ "auth.username": username });
+      const findEmailCustomer = await Customer.findOne({ "auth.email": email });
+      const findEmailDesigner = await Designer.findOne({ "auth.email": email });
+      const findUsernameCustomer = await Customer.findOne({ "auth.username": username });
+      const findUsernameDesigner = await Designer.findOne({ "auth.username": username });
 
-      if(findEmailUser) {
+      if(findEmailDesigner || findEmailCustomer) {
         return res.status(400).json({errors: { email: 'Email is already in use' }});
       }
 
-      if(findUsernameUser) {
+      if(findUsernameDesigner || findUsernameCustomer) {
         return res.status(400).json({errors: { username: 'The given username is already taken' }});
       }
+
+      // console.log(findUsernameDesigner)
+      // console.log(findUsernameCustomer)
+      // console.log(findEmailCustomer)
+      // console.log(findEmailDesigner)
 
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      const user = new User({
+      const details = {
+        name,
         config: {
           method: 'local'
         },
@@ -43,14 +52,26 @@ module.exports = {
             password: hashedPassword
           }
         }
-      });
+      }
 
-      await user.save();
+      var token = null;
+      var user = null;
 
-      // generate token
-      const token = signToken(user);
+      if(role === 'designer') {
+        const newDesigner = new Designer(details);
+        await newDesigner.save();
+        user = newDesigner;
+      } else if(role === 'customer') {
+        const newCustomer = new Customer(details);
+        await newCustomer.save();
+        user = newCustomer;
+      }
+      
+      token = signToken(`${role === 'designer' ? 'Des' : 'Cus'}-${user._id}`);
 
       const userDetails = {
+        name, 
+        role,
         config: user.config,
         auth: {
           email: user.auth.email,
@@ -74,8 +95,10 @@ module.exports = {
   },
   login: async (req,res) => {
     try {
-      const user = req.user._doc;
-      const token = signToken(user);
+      const user = req.user;
+      console.log(req.user);
+
+      const token = signToken(`${user.role === 'designer' ? 'Des' : 'Cus'}-${user._id}`);
       
       const payload = {
         token,
@@ -106,7 +129,6 @@ module.exports = {
     try {
       const user = req.user;
       const token = signToken(user);
-      console.log('REACHED HERE!!!!');
 
       res.cookie('Auth', token, {
         maxAge: 24 * 60 * 60,
