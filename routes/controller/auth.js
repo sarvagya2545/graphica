@@ -126,7 +126,7 @@ module.exports = {
   getUser: async (req,res) => {
     try {
       const user = req.user;
-      token = signToken(`${user.role === 'designer' ? 'Des' : 'Cus'}-${user._id}`);
+      let token = signToken(`${user.role === 'designer' ? 'Des' : 'Cus'}-${user._id}`);
       
       res.status(200).cookie('Auth', token, {
         maxAge: 24 * 60 * 60,

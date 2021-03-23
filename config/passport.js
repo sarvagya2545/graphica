@@ -9,9 +9,6 @@ const { jwtSecret } = require("./keys");
 const cookieExtractor = (req) => {
     var token = null;
     if (req && req.cookies) token = req.cookies['Auth'];
-
-    // console.log('cookies', req.cookies);
-    // console.log(token);
     return token;
 }
 
@@ -24,7 +21,6 @@ passport.use(
         },
         async (payload, done) => {
             try {
-                // console.log('payload', payload);
                 const [ role, id ] = payload.sub.split('-');
                 var foundUser;
 
