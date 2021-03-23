@@ -13,7 +13,7 @@ import {
 
 export const loadUser = () => (dispatch) => {
   axios
-    .get("/api/users/current", {
+    .get("/api/auth/current", {
       withCredentials: true,
       headers: { "Content-Type": "application/json", "Accept": "application/json" },
     })
@@ -29,7 +29,7 @@ export const loadUser = () => (dispatch) => {
 
 export const register = (formData) => (dispatch) => {
   axios
-    .post(`/api/users/signup`, formData, {
+    .post(`/api/customer/signup`, formData, {
       withCredentials: true,
       headers: { "Content-Type": "application/json", "Accept": "application/json" },
     })
@@ -57,7 +57,7 @@ export const register = (formData) => (dispatch) => {
 
 export const login = (formData) => (dispatch) => {
   axios
-    .post(`/api/users/login`, formData, {
+    .post(`/api/auth/login`, formData, {
       withCredentials: true,
       headers: { "Content-Type": "application/json", "Accept": "application/json" },
     })
@@ -98,7 +98,7 @@ export const login = (formData) => (dispatch) => {
 export const logout = () => (dispatch) => {
   axios
     .post(
-      `/api/users/logout`,
+      `/api/auth/logout`,
       {},
       { withCredentials: true, headers: { "Content-Type": "application/json", "Accept": "application/json" } }
     )

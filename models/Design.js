@@ -1,7 +1,6 @@
 const mongoose=require('mongoose');
 const Float=require('mongoose-float').loadType(mongoose,2);
 const Designer=require('./Designer');
-const User=require('./User');
 
 const designSchema = new mongoose.Schema({
     name: {
@@ -15,7 +14,9 @@ const designSchema = new mongoose.Schema({
     },
     currentRating: {
         type: Float,
-        default: 0,
+        default: 4.00,
+        min: 1.00,
+        max: 5.00
     },
     numberOfRatings: {
         type: Number,
@@ -23,6 +24,7 @@ const designSchema = new mongoose.Schema({
     },
     tags: {
         type: [String],
+        default: []
     },
     ratedBy: [{
         id: {
@@ -38,6 +40,14 @@ const designSchema = new mongoose.Schema({
     price: {
         type: Float,
         required: true,
+    },
+    assets: {
+        type: [
+            {
+                type: String,
+            }
+        ],
+        default: []
     }
 });
 
