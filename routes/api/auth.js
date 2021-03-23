@@ -8,15 +8,6 @@ const validate = require('../../validators/validate');
 const PassportSignIn = passport.authenticate('local', { session: false });
 const passportJWT = passport.authenticate('jwt', { session: false });
 
-const debugMiddleware = (req,res, next) => {
-  console.log(req.body);
-  console.log(req.headers);
-  console.log(req.cookies);
-  console.log('THIS ROUTE GOT CALLED')
-  // console.log(req);
-  next();
-}
-
 router.route('/customer/signup')
   .post(signupValidationRules(), validate, AuthController.signup('customer'))
 ;

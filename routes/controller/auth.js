@@ -10,7 +10,7 @@ const signToken = (sub) => {
     iss: 'Graphica',
     iat: new Date().getTime()
   }, jwtSecret, {
-    expiresIn: '24h'
+    expiresIn: '12h'
   });
 }
 
@@ -86,8 +86,6 @@ module.exports = {
         httpOnly: true
       }).json({ token, user: userDetails });
 
-      // .json({ token, user: userDetails })
-
     } catch (err) {
       console.log(err);
       res.status(500).json({errors: { err: "Server error" }});
@@ -98,7 +96,7 @@ module.exports = {
       const user = req.user;
       console.log(req.user);
 
-      const token = signToken(`${user.role === 'designer' ? 'Des' : 'Cus'}-${user._id}`);
+      const token = signToken(`${user.role === 'Des' ? 'Des' : 'Cus'}-${user._id}`);
       
       const payload = {
         token,
@@ -128,15 +126,13 @@ module.exports = {
   getUser: async (req,res) => {
     try {
       const user = req.user;
-      const token = signToken(user);
-
-      res.cookie('Auth', token, {
+      let token = signToken(`${user.role === 'designer' ? 'Des' : 'Cus'}-${user._id}`);
+      
+      res.status(200).cookie('Auth', token, {
         maxAge: 24 * 60 * 60,
         httpOnly: true,
         sameSite: 'strict'
-      });
-      
-      res.status(200).json({ token, user });
+      }).json({ token, user });
     } catch (error) {
       console.log(error);
       res.status(500).json({errors: { err: "Server error" }}); 

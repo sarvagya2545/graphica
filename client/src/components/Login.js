@@ -7,7 +7,7 @@ const Login = ({ login, isAuthenticated }) => {
   const history = useHistory();
 
   const [formData, setFormData] = useState({
-    email: '',
+    usernameOrEmail: '',
     password: ''
   });
 
@@ -35,7 +35,7 @@ const Login = ({ login, isAuthenticated }) => {
       <h1>LOGIN</h1>
       <form className="form" onSubmit={submitHandler}>
         <div className="form-group">
-          <input type="email" name="email" className="input" value={formData.email} onChange={onChangeHandler} placeholder="..."/>
+          <input type="text" name="usernameOrEmail" className="input" value={formData.email} onChange={onChangeHandler} placeholder="..."/>
           <label htmlFor="email">Email</label>
         </div>
         <div className="form-group">
