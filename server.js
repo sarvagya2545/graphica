@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const passport = require('passport');
 
 const { mongoDBURL } = require('./config/keys');
 
@@ -31,8 +32,19 @@ mongoose
 
 // Routes
 app.use('/api/auth', require('./routes/api/auth'));
-// require('./payment/pay.js')(app);
+app.use('/api/transactions', require('./routes/api/transactions'));
+app.use('/api/designs', require('./routes/api/designs'));
 // require('./payment/withdraw')(app);
+
+app.get('/pay',(req,res)=>{
+  res.send(`<form action="/api/transactions/pay" method="post">
+    <input type="submit" value="Buy">
+  </form>`);
+});
+app.get('/withdraw',passport.authenticate('jwt', { session: false }),(req,res)=>{
+    res.send('<form action="/withdraw" method="post"> <input type="text" name="email"><input type="text" name="amount"><input type="submit" value="Withdraw"></form> ');
+});
+
 
 // Serve static assets under production
 if(process.env.NODE_ENV === 'production') {
