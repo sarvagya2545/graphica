@@ -1,4 +1,4 @@
-const multer = require('multer');
+const multer, { diskStorage } = require('multer');
 const allowedMimeTypes = [
     'application/pdf',          // pdfs
     'image/png',                // png files
@@ -12,7 +12,7 @@ const allowedMimeTypes = [
 ]
 
 const multerConfig = multer({
-    storage: multer.diskStorage({}),
+    storage: diskStorage,
     limits: { fileSize: 10 * 1024 * 1024 /* in bytes */ },
     fileFilter: (req, file, cb) => {
         console.log(file);
